@@ -1,8 +1,8 @@
 # Python Getting Started Instructions
 
-To get started calling the Onboarding Buddy API using the Python library hosted in PyPi please use the following instructions.  These instructions assume that python is installed and uses a virtual environment.
+To get started calling the OnboardingBuddy API using our Python library hosted in <a href="https://pypi.org/project/onboarding-buddy-client/">PyPi</a>, please use the following instructions.  These instructions assumes that python is installed on your local machine and uses a virtual environment.
 
-## Activate environment
+## 1 Activate environment
 
 ```
 python -m venv venv
@@ -16,6 +16,8 @@ pip install onboarding-buddy-client
 ```
 
 ## Set environment variables
+
+In order to set the environment variables you will need to create an Onboarding Buddy account.  If you need to do this please follow the instructions in <a href="https://pypi.org/project/onboarding-buddy-client/">this video</a> to locate and copy the required keys.
 
 Linux based operating systems
 ```

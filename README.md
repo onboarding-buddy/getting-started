@@ -1,10 +1,10 @@
 # Onboarding Buddy Getting Started
 
-Documentation and Help for integrating the Onboarding Buddy API Clients
+This repo contains documentation and help for integrating your applications with our OnboardingBuddy platform using our selection of API clients and code snippets.
 
 ## Dotnet Integration Help
 
-For help getting started integrating with our dotnet api client library hosted in Nuget click here:
+For help getting started integrating with our dotnet api client library hosted in Nuget <a href="dotnet">click here</a>:
 
 ## Python Integration Help
 
@@ -12,4 +12,4 @@ For help getting started integrating with our python api client library hosted i
 
 ## Typescript Integration Help
 
-For help getting started integrating with our typescript api client library hosted in npm click here:
+For help getting started integrating with our typescript api client library hosted in <a href="typescript">click here</a>:
