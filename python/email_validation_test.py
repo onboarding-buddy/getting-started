@@ -10,6 +10,10 @@ ob_app_key = os.getenv("OB_APP_KEY")
 ob_api_key = os.getenv("OB_API_KEY")
 ob_api_secret = os.getenv("OB_API_SECRET")
 
+print(f"ob_app_key: {ob_app_key}")
+print(f"ob_api_key: {ob_api_key}")
+print(f"ob_api_secret: {ob_api_secret}")
+
 # Configure the client with authentication headers
 config = Configuration(
     host="https://api.dev.onboardingbuddy.co/validation-service",
