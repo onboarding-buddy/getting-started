@@ -57,12 +57,12 @@ Your should see output similar to the below for a successful call
 
 ```
 Email Address: email@domain.com
-Email Status: 3
+Email Status: Caution
 Free Email: False
 Domain: domain.com
 MX Record: domain-com.mail.protection.outlook.com
 MX Found: True
-Check Status: 1
+Check Status: Matched
 Has Sanction Match: False
 ```
 
