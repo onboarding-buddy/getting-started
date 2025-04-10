@@ -19,9 +19,9 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 validation_api = ValidationApi(api_client)
 
-# Create an email validation request
+# Create an email validation with sanctions request
 request = EmailAddressRequestM(
-    email_address="email@domain.com"
+    email_address="AFRICONLINE@PROTONMAIL.COM"
 )
 
 # Submit the email validation request
@@ -36,6 +36,18 @@ try:
     print(f"Check Status: {response.check_status}")
     print(f"Has Sanction Match: {response.has_sanction_match}")
     if response.has_sanction_match:
-        print(f"Sanction Match: {response.sanction_record}")
+        print(f"Entity Name: {response.sanction_record.entity_match[0].full_name}")
+        print(f"Program: {response.sanction_record.entity_match[0].program}")
+        print(f"Secondary Sanctions Risk: {response.sanction_record.entity_match[0].secondary_sanctions_risk}")
+
+        print("\nAlias List:")        
+        for x in response.sanction_record.entity_match[0].also_known_as:
+            print(f"{x}")
+
+        print("\nLinked Individuals:")
+        for y in response.sanction_record.entity_match[0].linked_individuals:
+            print(f"Full Name: {y.full_name}")
+            print(f"Linked To: {y.linked_to}")
+
 except Exception as e:
     print(f"Error: {e}")
