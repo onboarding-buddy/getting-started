@@ -19,15 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 sanctions_api = SanctionsApi(api_client)
 
-# Create an crypto wallet sanctions request
-request = CryptoWalletSanctionsCheckRequestM(
-    address="0X098B716B8AAF21512996DC57EB0615E2383E2F96"
-)
-
-
 # Submit the crypto wallet request
 try:
+    # Create an crypto wallet sanctions request
+    request = CryptoWalletSanctionsCheckRequestM(
+        address="0X098B716B8AAF21512996DC57EB0615E2383E2F96"
+    )
+
     response = sanctions_api.crypto_wallet(crypto_wallet_sanctions_check_request_m=request)
+    
     print(f"Matched: {response.matched}")
     print(f"Entity Name: {response.entity_match[0].full_name}")
     print(f"Program: {response.entity_match[0].program}")

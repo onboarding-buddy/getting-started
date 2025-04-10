@@ -19,15 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 sanctions_api = SanctionsApi(api_client)
 
-# Create an aircraft sanctions request
-request = AircraftSanctionsCheckRequestM(
-    name="RA-02791"
-)
-
-
 # Submit the aircraft request
 try:
+    # Create an aircraft sanctions request
+    request = AircraftSanctionsCheckRequestM(
+        name="RA-02791"
+    )
+
     response = sanctions_api.aircraft(aircraft_sanctions_check_request_m=request)
+    
     print(f"Matched: {response.matched}")
     print(f"Full Name: {response.match[0].full_name}")
     print(f"Program: {response.match[0].program}")

@@ -20,17 +20,18 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 validation_api = ValidationApi(api_client)
 
-# Create an mobile number validation request
-request = MobileNumberRequestM(
-    mobile_number=MobileNumberM(
-        prefix="61",
-        number="0422123456"
-    )
-)
-
 # Submit the mobile number validation request
 try:
+    # Create an mobile number validation request
+    request = MobileNumberRequestM(
+        mobile_number=MobileNumberM(
+            prefix="61",
+            number="0422123456"
+        )
+    )
+    
     response = validation_api.mobile(mobile_number_request_m=request)
+    
     print(f"Mobile Number: {response.mobile_number}")
     print(f"Valid: {response.valid}")
     print(f"localFormat: {response.local_format}")

@@ -19,15 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 sanctions_api = SanctionsApi(api_client)
 
-# Create an entity sanctions check request
-request = EntitySanctionsCheckRequestM(
-    name="INTERNET RESEARCH AGENCY LLC"
-)
-
-
 # Submit the entity request
 try:
+    # Create an entity sanctions check request
+    request = EntitySanctionsCheckRequestM(
+        name="INTERNET RESEARCH AGENCY LLC"
+    )
+    
     response = sanctions_api.entity(entity_sanctions_check_request_m=request)
+    
     print(f"Matched: {response.matched}")
     print(f"Full Name: {response.match[0].full_name}")
     print(f"Program: {response.match[0].program}")

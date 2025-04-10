@@ -19,17 +19,17 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 sanctions_api = SanctionsApi(api_client)
 
-# Create an individual sanction request
-request = IndividualSanctionsCheckRequestM(
-    first_name="YEVGENIY",
-    last_name="PRIGOZHIN",
-    birth_year="1961"
-)
-
-
 # Submit the email validation request
 try:
+    # Create an individual sanction request
+    request = IndividualSanctionsCheckRequestM(
+        first_name="YEVGENIY",
+        last_name="PRIGOZHIN",
+        birth_year="1961"
+    )
+
     response = sanctions_api.individual(individual_sanctions_check_request_m=request)
+    
     print(f"Matched: {response.matched}")
     print(f"Full Name: {response.results[0].full_name}")
     print(f"First Name: {response.results[0].first_name}")

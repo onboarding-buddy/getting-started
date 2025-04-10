@@ -19,14 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 validation_api = ValidationApi(api_client)
 
-# Create an email validation with sanctions request
-request = EmailAddressRequestM(
-    email_address="AFRICONLINE@PROTONMAIL.COM"
-)
-
 # Submit the email validation request
 try:
+    # Create an email validation with sanctions request
+    request = EmailAddressRequestM(
+        email_address="AFRICONLINE@PROTONMAIL.COM"
+    )
+
     response = validation_api.email(email_address_request_m=request)
+
     print(f"Email Address: {response.email_address}")
     print(f"Email Status: {response.email_status}")
     print(f"Free Email: {response.free_email}")

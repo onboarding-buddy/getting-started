@@ -19,15 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 sanctions_api = SanctionsApi(api_client)
 
-# Create an vessel sanction check request
-request = VesselSanctionsCheckRequestM(
-    name="HWANG GUM SAN 2"
-)
-
-
-# Submit the email validation request
+# Submit the vessel sanction request
 try:
+    # Create a vessel sanction check request
+    request = VesselSanctionsCheckRequestM(
+        name="HWANG GUM SAN 2"
+    )
+
     response = sanctions_api.vessel(vessel_sanctions_check_request_m=request)
+    
     print(f"Matched: {response.matched}")
     print(f"Full Name: {response.match[0].full_name}")
     print(f"Program: {response.match[0].program}")

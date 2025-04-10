@@ -19,14 +19,15 @@ config = Configuration(
 api_client = ApiClient(configuration=config)
 validation_api = ValidationApi(api_client)
 
-# Create an ip address validation request
-request = IpAddressRequestM(
-    ip_address="46.182.106.190"
-)
-
 # Submit the ip address validation request
 try:
+    # Create an ip address validation request
+    request = IpAddressRequestM(
+        ip_address="46.182.106.190"
+    )
+
     response = validation_api.ipaddress(ip_address_request_m=request)
+
     print(f"ipAddress: {response.ip_address}")
     print(f"ISO Code: {response.iso_code}")
     print(f"Country: {response.country}")
