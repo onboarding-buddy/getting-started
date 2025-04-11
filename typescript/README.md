@@ -1,8 +1,8 @@
-# Python SDK - Getting Started Instructions
+# Typescript SDK - Getting Started Instructions
 
-To get started calling the OnboardingBuddy API using our Python library hosted in <a href="https://pypi.org/project/onboarding-buddy-client/">PyPi</a>, please use the following instructions.  These instructions assume the use of anaconda for your python virtual environment.
+To get started calling the OnboardingBuddy API using our Typescript library hosted in <a href="https://www.npmjs.com/org/onboardingbuddy">NPM</a>, please use the following instructions.  
 
-## 1 Clone the repository and navigate to the python folder
+## 1 Clone the repository and navigate to the npx ts-node src/folder
 ```
 git clone https://github.com/onboarding-buddy/getting-started.git
 cd getting-started
@@ -10,11 +10,11 @@ cd getting-started
 
 ## 2 Set environment variables
 
-In order to set the environment variables you will need to create an Onboarding Buddy account.  If you need to do this please follow the instructions in <a href="https://pypi.org/project/onboarding-buddy-client/">this video</a> to locate and copy the required keys.
+In order to set the environment variables you will need to create an Onboarding Buddy account.  If you need to do this please follow the instructions in <a href="https://video.link">this video</a> to locate and copy the required keys.
 
 ### 2.1 Create .env file
 
-Create a .env file in the python folder with the following entries
+Create a .env file in the typescript folder with the following entries
 ```
 OB_APP_KEY=REPLACE WITH YOUR APP KEY
 OB_API_KEY=REPLACE WITH YOUR API KEY
@@ -22,46 +22,43 @@ OB_API_SECRET=REPLACE WITH YOUR API SECRET
 ```
 Make sure to update the values with those from your Onboarding Buddy account.
 
-## 3 Activate environment
+## 3 Install dependancies
+
+### 3.1 Install default packages
 
 ```
-conda activate venv
-cd python
+npm install
 ```
 
-## 4 Install dependancies
-
-### 4.1 Install the requirements.txt
+### 3.2 Install Onboarding Buddy SDK
 
 ```
-pip install -r requirements.txt
+npm install @onboardingbuddy/onboardingbuddy-client
 ```
 
-### 4.2 Install Onboarding Buddy SDK
+## 4 Run tests
 
-```
-pip install onboarding-buddy-client
-```
+### 4.1 Test - Email Address Validation
 
-## 5 Run tests
+This code snippet from the email_validation_test.ts file demonstrates how to validate a mobile number.
 
-### 5.1 Test - Email Address Validation
+```typescript
+// Email Validation
+const emailValidation = client.validateEmail({
+  emailAddress: 'email@domain.com',
+});
 
-This code snippet from the email_validation_test.py file demonstrates how to validate a mobile number.
-
-```python
-# Create an email validation request
-request = EmailAddressRequestM(
-    email_address="email@domain.com"
-)
-
-response = validation_api.email(email_address_request_m=request)
+emailValidation
+    .then(response => 
+        { 
+            .....
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python email_validation_test.py
+npx ts-node src/email_validation_test.ts
 ```
 
 Your should see output similar to the below for a successful call.
@@ -79,24 +76,26 @@ Has Sanction Match: False
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/email">here</a> 
 
-### 5.2 Test - IP Address Validation
+### 4.2 Test - IP Address Validation
 
-This code snippet from the ip_address_validation_test.py file demonstrates how to validate a mobile number.
+This code snippet from the ip_address_validation_test.ts file demonstrates how to validate a mobile number.
 
-```python
-# Create an ip address validation request
-request = IpAddressRequestM(
-    ip_address="46.182.106.190"
-)
+```typescript
+const ipAddressValidation = client.validateIpAddress({
+  ipAddress: '46.182.106.190',
+});
 
-response = validation_api.ipaddress(ip_address_request_m=request)
-
+ipAddressValidation
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python ip_address_validation_test.py
+npx ts-node src/ip_address_validation_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -115,24 +114,26 @@ Message Id: c45d379d-242b-4d7c-94bc-4309098b68f3
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/ipaddress">here</a> 
 
-### 5.3 Test - User Agent Validation
+### 4.3 Test - User Agent Validation
 
-This code snippet from the user_agent_validation_test.py file demonstrates how to validate a user agent.
+This code snippet from the user_agent_validation_test.ts file demonstrates how to validate a user agent.
 
-```python
+```typescript
+const browserValidation = client.validateBrowser({
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
+});
 
-    request = BrowserRequestM(
-        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
-    )
-
-    response = validation_api.browser(browser_request_m=request)
-    
+browserValidation
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python user_agent_validation_test.py
+npx ts-node src/user_agent_validation_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -150,26 +151,29 @@ Has Sanction Match: False
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/browser">here</a> 
 
-### 5.4 Test - Mobile Number Validation
+### 4.4 Test - Mobile Number Validation
 
-This code snippet from the mobile_number_validation_test.py file demonstrates how to validate a mobile number.
+This code snippet from the mobile_number_validation_test.ts file demonstrates how to validate a mobile number.
 
-```python
-# Create an mobile number validation request
-request = MobileNumberRequestM(
-    mobile_number=MobileNumberM(
-        prefix="61",
-        number="0422123456"
-    )
-)
+```typescript
+const mobileNumberValidation = client.validateMobile({
+  mobileNumber: {
+     prefix:'61',
+     number:'0422123456'
+  }
+});
 
-response = validation_api.mobile(mobile_number_request_m=request)
+mobileNumberValidation
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python mobile_number_validation_test.py
+npx ts-node src/mobile_number_validation_test.ts
 ```
 
 Your should see output similar to the below for a successful call.
@@ -189,26 +193,28 @@ Message Id: e9dc7728-f13b-47ff-8280-71dfabf152dd
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/mobile">here</a> 
 
-### 5.5 Test - Sanctions Check Individual
+### 4.5 Test - Sanctions Check Individual
 
-This code snippet from the individual_sanctions_list_test.py file demonstrates how to submit a sanctions check for an individual.
+This code snippet from the individual_sanctions_list_test.ts file demonstrates how to submit a sanctions check for an individual.
 
-```python
-# Create an individual sanction request
-request = IndividualSanctionsCheckRequestM(
-    first_name="YEVGENIY",
-    last_name="PRIGOZHIN",
-    birth_year="1961"
-)
+```typescript
+const individualSanctions = client.checkIndividualSanctions({
+  firstName: 'YEVGENIY',
+  lastName: 'PRIGOZHIN',
+  birthYear: '1961',
+});
 
-response = sanctions_api.individual(individual_sanctions_check_request_m=request)
-    
+individualSanctions
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python individual_sanctions_list_test.py
+npx ts-node src/individual_sanctions_list_test.ts
 ```
 
 Your should see output similar to the below for a successful call.
@@ -230,24 +236,26 @@ Secondary Sanctions Risk: UKRAINE-/RUSSIA-RELATED SANCTIONS REGULATIONS, 31 CFR 
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/individual">here</a> 
 
-### 5.6 Test - Sanctions Check Entity
+### 4.6 Test - Sanctions Check Entity
 
-This code snippet from the entity_sanctions_list_test.py file demonstrates how to submit a sanctions check for an entity.
+This code snippet from the entity_sanctions_list_test.ts file demonstrates how to submit a sanctions check for an entity.
 
-```python
-# Create an entity sanctions check request
-request = EntitySanctionsCheckRequestM(
-    name="INTERNET RESEARCH AGENCY LLC"
-)
+```typescript
+const entitySanctions = client.checkEntitySanctions({
+  name: 'INTERNET RESEARCH AGENCY LLC'
+});
 
-response = sanctions_api.entity(entity_sanctions_check_request_m=request)
-    
+entitySanctions
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python entity_sanctions_list_test.py
+npx ts-node src/entity_sanctions_list_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -281,23 +289,26 @@ Secondary Sanctions Risk: UKRAINE-/RUSSIA-RELATED SANCTIONS REGULATIONS, 31 CFR 
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/entity">here</a> 
 
-### 5.7 Test sanctions list aircraft validation
+### 4.7 Test sanctions list aircraft validation
 
-This code snippet from the aircraft_sanctions_list_test.py file demonstrates how to submit a sanctions check for an aircraft.
+This code snippet from the aircraft_sanctions_list_test.ts file demonstrates how to submit a sanctions check for an aircraft.
 
-```python
-# Create an aircraft sanctions request
-request = AircraftSanctionsCheckRequestM(
-    name="RA-02791"
-)
+```typescript
+const aircraftSanctions = client.checkAircraftSanctions({
+  name: 'RA-02791'
+});
 
-response = sanctions_api.aircraft(aircraft_sanctions_check_request_m=request)
+aircraftSanctions
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python aircraft_sanctions_list_test.py
+npx ts-node src/aircraft_sanctions_list_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -317,23 +328,26 @@ Alias: M-VITO
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/aircraft">here</a> 
 
-### 5.8 Test sanctions list vessel validation
+### 4.8 Test sanctions list vessel validation
 
-This code snippet from the vessel_sanctions_list_test.py file demonstrates how to submit a sanctions check for a vessel.
+This code snippet from the vessel_sanctions_list_test.ts file demonstrates how to submit a sanctions check for a vessel.
 
-```python
-# Create a vessel sanction check request
-request = VesselSanctionsCheckRequestM(
-    name="HWANG GUM SAN 2"
-)
+```typescript
+const vesselSanctions = client.checkVesselSanctions({
+  name: 'HWANG GUM SAN 2'
+});
 
-response = sanctions_api.vessel(vessel_sanctions_check_request_m=request)
+vesselSanctions
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 
 ```
-python vessel_sanctions_list_test.py
+npx ts-node src/vessel_sanctions_list_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -350,22 +364,25 @@ Vessel Flag: Democratic People's Republic of Korea
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/vessel">here</a> 
 
-### 5.9 Test sanctions list crypto wallet validation
+### 4.9 Test sanctions list crypto wallet validation
 
-This code snippet from the crypto_wallet_sanctions_list_test.py file demonstrates how to submit a sanctions check for a crypto wallet.
+This code snippet from the crypto_wallet_sanctions_list_test.ts file demonstrates how to submit a sanctions check for a crypto wallet.
 
-```python
-# Create an crypto wallet sanctions request
-request = CryptoWalletSanctionsCheckRequestM(
-    address="0X098B716B8AAF21512996DC57EB0615E2383E2F96"
-)
+```typescript
+const cryptoWalletSanctions = client.checkCryptoWalletSanctions({
+  address: '0X098B716B8AAF21512996DC57EB0615E2383E2F96'
+});
 
-response = sanctions_api.crypto_wallet(crypto_wallet_sanctions_check_request_m=request)
+cryptoWalletSanctions
+    .then(response => 
+        { 
+            ...
+        }
 ```
 
 To run this code example use the command:
 ```
-python crypto_wallet_sanctions_list_test.py
+npx ts-node src/crypto_wallet_sanctions_list_test.ts
 ```
 
 Your should see output similar to the below for a successful call
@@ -397,22 +414,26 @@ Alias List:
 
 For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/crypto-wallet">here</a> 
 
-### 5.10 Test email validation with sanction data
+### 4.10 Test email validation with sanction data
 
-This code snippet from the email_sanctions_test.py file demonstrates how to submit a sanctions check for an email address.
+This code snippet from the email_sanctions_test.ts file demonstrates how to submit a sanctions check for an email address.
 
-```python
-# Create an email validation with sanctions request
-request = EmailAddressRequestM(
-    email_address="AFRICONLINE@PROTONMAIL.COM"
-)
+```typescript
+const emailValidation = client.validateEmail({
+  emailAddress: 'AFRICONLINE@PROTONMAIL.COM',
+});
 
-response = validation_api.email(email_address_request_m=request)
+emailValidation
+    .then(response => 
+        { 
+            ...
+        }
+
 ```
 
 To run this code example use the command:
 ```
-python email_sanctions_test.py
+npx ts-node src/email_sanctions_test.ts
 ```
 
 Your should see output similar to the below for a successful call
