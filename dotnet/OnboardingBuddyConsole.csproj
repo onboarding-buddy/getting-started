@@ -5,10 +5,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OnboardingBuddyClient" Version="1.0.0-beta2" />
+    <PackageReference Include="OnboardingBuddyClient" Version="1.0.0-beta3" />
   </ItemGroup>
 
 </Project>
