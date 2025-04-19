@@ -10,9 +10,9 @@ namespace OnboardingBuddyConsole
         {
             var onboardingBuddyConfiguration = new OnboardingBuddyConfiguration()
             {
-                AppKey = "fa07a4449f2c4567", //Environment.GetEnvironmentVariable("OB_APP_KEY"),
-                ApiKey = "18e339061703486395381df8689845e0", //Environment.GetEnvironmentVariable("OB_API_KEY"),
-                ApiSecret = "58cab6bd17ac45f3bfcc88f973ee717e" //Environment.GetEnvironmentVariable("OB_API_SECRET"),
+                AppKey = Environment.GetEnvironmentVariable("OB_APP_KEY"),
+                ApiKey = Environment.GetEnvironmentVariable("OB_API_KEY"),
+                ApiSecret = Environment.GetEnvironmentVariable("OB_API_SECRET"),
             }; 
 
             try
