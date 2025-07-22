@@ -8,9 +8,19 @@ git clone https://github.com/onboarding-buddy/getting-started.git
 cd getting-started
 ```
 
-## 2 Set environment variables
+## 1.1 Create an OnboardingBuddy account 
 
-In order to set the environment variables you will need to create an Onboarding Buddy account.  If you need to do this please follow the instructions in <a href="https://pypi.org/project/onboarding-buddy-client/">this video</a> to locate and copy the required keys.
+If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
+
+## 1.2 Get you API credentials
+
+Navigate to you application making note of the following:
+
+```
+APP_KEY (Application Key)
+API_KEY (Api Key)
+API_SECRET (Api Secret)
+```
 
 ### 2.1 Create .env file
 

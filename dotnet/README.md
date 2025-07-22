@@ -2,16 +2,16 @@
 
 ## 1 Create an OnboardingBuddy account 
 
-If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account
+If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
 
 ## 2 Get you API credentials
 
-Navigate to you application making not of the following:
+Navigate to you application making note of the following:
 
 ```
-APP_KEY
-API_KEY
-API_SECRET
+APP_KEY (Application Key)
+API_KEY (Api Key)
+API_SECRET (Api Secret)
 ```
 
 ## 3 Save credentials to environment variables
@@ -26,7 +26,7 @@ setx OB_API_SECRET <API_SECRET_VALUE>
 ```
 
 ## 3 Create a test application 
-Proceed to create a simple console application toinvoke the service using the following steps
+Proceed to create a simple console application to invoke the service using the following steps.
 
 ### 3.1 First create a new console application
 
@@ -56,21 +56,30 @@ namespace OnboardingBuddyConsole
     {
         static async Task Main(string[] args)
         {
-            var onboardingBuddyConfiguration = new OnboardingBuddyConfiguration()
-            {
-                AppKey = Environment.GetEnvironmentVariable("OB_APP_KEY"),
-                ApiKey = Environment.GetEnvironmentVariable("OB_API_KEY"),
-                ApiSecret = Environment.GetEnvironmentVariable("OB_API_SECRET"),
-            }; 
+            var appKey = Environment.GetEnvironmentVariable("OB_APP_KEY");
+            var apiKey = Environment.GetEnvironmentVariable("OB_API_KEY");
+            var apiSecret = Environment.GetEnvironmentVariable("OB_API_SECRET");
+
+            Configuration config = new Configuration();
+            
+            // Configure API key authorization: ApiKey
+            config.ApiKey.Add("ob-api-key", apiKey);
+
+            // Configure API key authorization: AppKey
+            config.ApiKey.Add("ob-app-key", appKey);
+
+            // Configure API key authorization: ApiSecret
+            config.ApiKey.Add("ob-api-secret", apiSecret);
 
             try
             {
                 #region ValidationApi
 
-                var validationApi = new ValidationApi(onboardingBuddyConfiguration);
+                var validationApi = new ValidationApi(config);
 
                 #region Validate Email Address
-                var emailAddressRequest = new EmailAddressRequestM { EmailAddress = "email@domain.com" };
+                
+                var emailAddressRequest = new EmailAddressRequestM(emailAddress: "email@domain.com");
                 var emailAddressResponse = await validationApi.EmailAsync(emailAddressRequest);
 
                 Console.WriteLine("Email Address Validation Response: ");
@@ -79,7 +88,7 @@ namespace OnboardingBuddyConsole
                 #endregion
 
                 #region Validate IP Address
-                var ipAddressRequest = new IpAddressRequestM { IpAddress = "46.182.106.190" };
+                var ipAddressRequest = new IpAddressRequestM(ipAddress: "46.182.106.190");
                 var ipAddressResponse = await validationApi.IpaddressAsync(ipAddressRequest);
 
                 Console.WriteLine("\nIP Address Validation Response: ");
@@ -88,7 +97,7 @@ namespace OnboardingBuddyConsole
                 #endregion
 
                 #region Validate User Agent
-                var browserRequest = new BrowserRequestM { UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" };
+                var browserRequest = new BrowserRequestM(userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36" );
                 var browserResponse = await validationApi.BrowserAsync(browserRequest);
 
                 Console.WriteLine("\nUser Agent Validation Response: ");
@@ -97,15 +106,8 @@ namespace OnboardingBuddyConsole
                 #endregion
 
                 #region Validate Mobile Number
-
-                var mobileNumberRequest = new MobileNumberRequestM
-                {
-                    MobileNumber = new MobileNumberM
-                    {
-                        Prefix = "61",
-                        Number = "0422123456"
-                    }
-                };
+                var mobileNumber = new MobileNumberM(prefix: "61", number: "0422123456");
+                var mobileNumberRequest = new MobileNumberRequestM(mobileNumber: mobileNumber);
 
                 var mobileNumberResponse = await validationApi.MobileAsync(mobileNumberRequest);
 
@@ -121,13 +123,14 @@ namespace OnboardingBuddyConsole
 
                 #region Sanctions List Check - Individual
 
-                var sanctionsApi = new SanctionsApi(onboardingBuddyConfiguration);
+                var sanctionsApi = new SanctionsApi(config);
 
-                var individualSanctionsCheckRequest = new IndividualSanctionsCheckRequestM { 
-                    FirstName = "YEVGENIY",
-                    LastName = "PRIGOZHIN",
-                    BirthYear = "1961"
-                };
+                var individualSanctionsCheckRequest = new IndividualSanctionsCheckRequestM( 
+                    firstName: "YEVGENIY",
+                    lastName: "PRIGOZHIN",
+                    birthYear: "1961"
+                );
+
                 var individualSanctionsCheckResponse = await sanctionsApi.IndividualAsync(individualSanctionsCheckRequest);
 
                 Console.WriteLine("\nIndividual Sanction List Response: ");
@@ -293,45 +296,162 @@ namespace OnboardingBuddyConsole
 
                 #endregion
 
-                #region Email Validation with Sanctions List Check
+                #endregion
 
-                // Email Validation - With Sanctions
-                var emailAddressSanctionRequest = new EmailAddressRequestM { EmailAddress = "AFRICONLINE@PROTONMAIL.COM" };
-                var emailAddressSanctionResponse = await validationApi.EmailAsync(emailAddressSanctionRequest);
+                #region File Service Operations
 
-                Console.WriteLine("\nEmail Validation with Sanction List Response: ");
+                var fileApi = new FileApi(config);
+                
+                #endregion
+
+                #region Upload File (PDF)
+                var pdfFilePath = Directory.GetCurrentDirectory() + "\\exo-planets.pdf";
+                var pdfFileGlobalId = string.Empty;
+                using (var pdfFile = new FileStream(pdfFilePath, FileMode.Open))
+                {
+                    pdfFile.Position = 0;
+                    var uploadResponse = await fileApi.UploadAsync(file: pdfFile);
+                    pdfFileGlobalId = uploadResponse.GlobalId;
+                    Console.WriteLine("\nUpload Response: ");
+                    Console.WriteLine("-----------------------------------");
+
+                    Console.WriteLine(uploadResponse.ToString());
+                }
+                #endregion
+
+                #region Upload File (Image)
+                var imageFilePath = Directory.GetCurrentDirectory() + "\\eiffel-tower.jpg";
+                var imageFileGlobalId = string.Empty;
+                using (var imageFile = new FileStream(imageFilePath, FileMode.Open))
+                {
+                    imageFile.Position = 0;
+                    var uploadResponse = await fileApi.UploadAsync(file: imageFile);
+                    imageFileGlobalId = uploadResponse.GlobalId;
+                    Console.WriteLine("\nUpload Response: ");
+                    Console.WriteLine("-----------------------------------");
+
+                    Console.WriteLine(uploadResponse.ToString());
+                }
+                #endregion
+
+                #region GetFileRecords
+
+                var fileRecordsResponse = await fileApi.GetFileRecordsAsync();
+
+                Console.WriteLine("\nGetFileRecord Response: ");
                 Console.WriteLine("-----------------------------------");
 
-                Console.WriteLine("Email Validation Response:");
-                Console.WriteLine($"Message ID: {emailAddressSanctionResponse.MessageId}");
-                Console.WriteLine($"Correlation ID: {emailAddressSanctionResponse.CorrelationId}");
-                Console.WriteLine($"Email Address: {emailAddressSanctionResponse.EmailAddress}");
-                Console.WriteLine($"Email Status: {emailAddressSanctionResponse.EmailStatus}");
-                Console.WriteLine($"Free Email: {emailAddressSanctionResponse.FreeEmail}");
-                Console.WriteLine($"Domain: {emailAddressSanctionResponse.Domain}");
-                Console.WriteLine($"MX Found: {emailAddressSanctionResponse.MxFound}");
-                Console.WriteLine($"Check Status: {emailAddressSanctionResponse.CheckStatus}");
-
-                if (emailAddressSanctionResponse.SanctionRecord?.EntityMatch != null)
+                while(fileRecordsResponse.FileRecords.Any(c=>c.FileStatus == "PROCESSING"))
                 {
-                    Console.WriteLine($"Entity Name: {emailAddressSanctionResponse.SanctionRecord.EntityMatch[0].FullName}");
-                    Console.WriteLine($"Program: {emailAddressSanctionResponse.SanctionRecord.EntityMatch[0].Program}");
-                    Console.WriteLine($"Secondary Sanctions Risk: {emailAddressSanctionResponse.SanctionRecord.EntityMatch[0].SecondarySanctionsRisk}");
+                    Console.WriteLine("Awaing file processing.....");
+                    await Task.Delay(2000);
+                    fileRecordsResponse = await fileApi.GetFileRecordsAsync();
+                }
 
-                    Console.WriteLine($"Alias List:");
-                    emailAddressSanctionResponse.SanctionRecord.EntityMatch[0].AlsoKnownAs?.ForEach(Console.WriteLine);
-
-                    Console.WriteLine($"Linked Individuals:");
-                    emailAddressSanctionResponse.SanctionRecord.EntityMatch[0].LinkedIndividuals?.ForEach(z =>
-                    {
-                        Console.WriteLine($"Full Name: {z.FullName}");
-                        Console.WriteLine($"Linked To: {z.LinkedTo}");
-                    });
+                foreach (var fileRecord in fileRecordsResponse.FileRecords)
+                {
+                    Console.WriteLine(fileRecord.ToString());
                 }
 
                 #endregion
 
+                #region GetFileRecord (Image)
+
+                var imageFileRecordResponse = await fileApi.GetFileRecordAsync(imageFileGlobalId);
+
+                Console.WriteLine("\nGetFileRecord Response: ");
+                Console.WriteLine("-----------------------------------");
+
+                Console.WriteLine(imageFileRecordResponse.ToString());
+
                 #endregion
+
+                #region GetFileRecord (PDF)
+
+                var pdfFileRecordResponse = await fileApi.GetFileRecordAsync(imageFileGlobalId);
+
+                Console.WriteLine("\nGetFileRecord Response: ");
+                Console.WriteLine("-----------------------------------");
+
+                Console.WriteLine(imageFileRecordResponse.ToString());
+
+                #endregion
+
+                #region Download (Image)
+
+                var imageFileStream = await fileApi.DownloadAsync(imageFileGlobalId);
+
+                Console.WriteLine("\nDownload Response (Image): ");
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine($"file GlobalId: {imageFileStream.GlobalId}");
+                Console.WriteLine($"file ContentType: {imageFileStream.ContentType}");
+                Console.WriteLine($"file Base64: {imageFileStream.Base64.Substring(0, 10)}.....");
+
+                #endregion
+
+                #region Download (PDF)
+
+                var pdfFileStream = await fileApi.DownloadAsync(pdfFileGlobalId);
+
+                Console.WriteLine("\nDownload Response (PDF): ");
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine($"file GlobalId: {imageFileStream.GlobalId}");
+                Console.WriteLine($"file ContentType: {imageFileStream.ContentType}");
+                Console.WriteLine($"file Base64: {imageFileStream.Base64.Substring(0, 10)}.....");
+
+                #endregion
+
+                #region Search Images
+                var imageSearchFileRequest = new SearchFileRequestM(searchString: "Parisian Landmarks",fileTypeGroupId: 1);
+                var imageSearchResults = await fileApi.SearchFileRecordsAsync(imageSearchFileRequest);
+
+                Console.WriteLine("\nSearchFileRecords Response: ");
+                Console.WriteLine("-----------------------------------");
+
+                foreach (var fileRecord in imageSearchResults.FileRecords)
+                {
+                    Console.WriteLine(fileRecord.ToString());
+                }
+                #endregion
+
+                #region Search Documents
+                var documentSearchFileRequest = new SearchFileRequestM(searchString: "Information about space and the solar system", fileTypeGroupId: 4);
+                var documentSearchResults = await fileApi.SearchFileRecordsAsync(documentSearchFileRequest);
+
+                Console.WriteLine("\nSearchFileRecords Response: ");
+                Console.WriteLine("-----------------------------------");
+
+                foreach (var fileRecord in documentSearchResults.FileRecords)
+                {
+                    Console.WriteLine(fileRecord.ToString());
+                }
+                #endregion
+
+                #region Document RAG
+
+                var prompt = "Provide a list of the exoplanets covered in the document including their size and distance from earth where available";
+                var ragRequest = new RagQueryRequestM
+                {
+                    FileGlobalId = pdfFileGlobalId,
+                    FileTypeGroupId = 4,
+                    SearchString = "Provide a list of the exoplanets covered in the document including their size and distance from earth where available"
+                };
+
+                var ragResponse = await fileApi.DocumentRagAsync(ragRequest);
+
+                Console.WriteLine("\nDocument RAG Prompt: ");
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine(prompt);
+
+                Console.WriteLine("\nDocument RAG Response: ");
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine(ragResponse.GeneratedText);
+
+
+                #endregion
+
+                Console.WriteLine("All done.  Press any key to close the console");
+                Console.ReadLine();
             }
             catch (ApiException ex)
             {
@@ -349,10 +469,25 @@ namespace OnboardingBuddyConsole
     }
 }
 
-
 ```
 
-### 3.4 Test the console app
+### 3.4 Download sample files
+
+To test the file upload service you will need to download the two sample files from the following locations.
+
+
+```
+https://docs.onboardingbuddy.co/sample-files/eiffel-tower.jpg
+```
+
+```
+https://docs.onboardingbuddy.co/sample-files/exo-planets.pdf
+```
+
+Add these to the project folder and ensure that 'Copy to Output Directory' is set to 'Copy Always' 
+
+
+### 3.5 Test the console app
 
 After running the application you should see results similar to the following output:
 

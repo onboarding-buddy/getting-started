@@ -9,7 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OnboardingBuddyClient" Version="1.0.0-beta3" />
+    <PackageReference Include="OnboardingBuddyClient" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="eiffel-tower.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="exo-planets.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
