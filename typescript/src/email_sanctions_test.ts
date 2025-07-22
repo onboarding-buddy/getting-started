@@ -22,7 +22,6 @@ emailValidation
             console.log(`MX Record: ${response.data.mxRecord}`)
             console.log(`MX Found: ${response.data.mxFound}`)
             console.log(`Check Status: ${response.data.checkStatus}`)
-            console.log(`Has Sanction Match: ${response.data.hasSanctionMatch}`)
 
             if (response.data.sanctionRecord?.entityMatch)
             {
