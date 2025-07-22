@@ -2,16 +2,16 @@
 
 ## 1 Create an OnboardingBuddy account 
 
-If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account
+If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
 
 ## 2 Get you API credentials
 
-Navigate to you application making not of the following:
+Navigate to you application making note of the following:
 
 ```
-APP_KEY
-API_KEY
-API_SECRET
+APP_KEY (Application Key)
+API_KEY (Api Key)
+API_SECRET (Api Secret)
 ```
 
 ## 3 Save credentials to environment variables
@@ -26,7 +26,7 @@ setx OB_API_SECRET <API_SECRET_VALUE>
 ```
 
 ## 3 Create a test application 
-Proceed to create a simple console application toinvoke the service using the following steps
+Proceed to create a simple console application to invoke the service using the following steps.
 
 ### 3.1 First create a new console application
 
