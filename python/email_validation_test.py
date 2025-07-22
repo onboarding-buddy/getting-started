@@ -35,8 +35,5 @@ try:
     print(f"MX Record: {response.mx_record}")
     print(f"MX Found: {response.mx_found}")
     print(f"Check Status: {response.check_status}")
-    print(f"Has Sanction Match: {response.has_sanction_match}")
-    if response.has_sanction_match:
-        print(f"Sanction Match: {response.sanction_record}")
 except Exception as e:
     print(f"Error: {e}")
