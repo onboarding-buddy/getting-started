@@ -12,4 +12,4 @@ For help getting started integrating with our python api client library hosted i
 
 ## Typescript Integration Help
 
-For help getting started integrating with our typescript api client library hosted in <a href="typescript">click here</a>:
+For help getting started integrating with our typescript api client library hosted in NPM<a href="typescript">click here</a>:
