@@ -1,63 +1,80 @@
 # Python SDK - Getting Started Instructions
 
-To get started calling the OnboardingBuddy API using our Python library hosted in <a href="https://pypi.org/project/onboarding-buddy-client/">PyPi</a>, please use the following instructions.  These instructions assume the use of anaconda for your python virtual environment.
-
-## 1 Clone the repository and navigate to the python folder
-```
-git clone https://github.com/onboarding-buddy/getting-started.git
-cd getting-started
-```
-
-## 1.1 Create an OnboardingBuddy account 
+## 1 Create an OnboardingBuddy account 
 
 If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
 
-## 1.2 Get you API credentials
+## 2 Get you API credentials
 
-Navigate to you application making note of the following:
+Navigate to you application by clicking "View" on the dashboard.  making note of the following:
 
+On the "Details" Tab make a note of your application key:
 ```
 APP_KEY (Application Key)
+```
+
+And on the "Access Tokens" Tab make a note of your Api Key and Api Secret:
+```
 API_KEY (Api Key)
 API_SECRET (Api Secret)
 ```
 
-### 2.1 Create .env file
+## 3 Save credentials to environment variables
 
-Create a .env file in the python folder with the following entries
-```
-OB_APP_KEY=REPLACE WITH YOUR APP KEY
-OB_API_KEY=REPLACE WITH YOUR API KEY
-OB_API_SECRET=REPLACE WITH YOUR API SECRET
-```
-Make sure to update the values with those from your Onboarding Buddy account.
+Next create the following environment variables:
 
-## 3 Activate environment
-
+Windows
 ```
+setx OB_APP_KEY <APP_KEY>
+setx OB_API_KEY <API_KEY>
+setx OB_API_SECRET <API_SECRET>
+```
+
+Linux
+```
+export OB_APP_KEY='<APP_KEY>'
+export OB_API_KEY='<API_KEY>'
+export OB_API_SECRET='<API_SECRET>'
+```
+
+## 4 Activate python environment
+
+This guide assumes the use of anaconda for running the python tests on your local machine.  For help installing and getting started <a href="https://www.anaconda.com/docs/getting-started/getting-started">click here</a>
+
+To activate you python environment run the following:
+```
+conda create -n venv python=3.9
 conda activate venv
+```
+
+After cloning this repo to your local machine navigate to the python folder in the repo
+```
 cd python
 ```
 
-## 4 Install dependancies
+## 5 Install dependancies
 
-### 4.1 Install the requirements.txt
+### 5.1 Install the requirements.txt
+
+To install the required depedencies run the following:
 
 ```
 pip install -r requirements.txt
 ```
 
-### 4.2 Install Onboarding Buddy SDK
+### 5.2 Install Onboarding Buddy SDK
+
+To install the Onboarding Buddy SDK hosted in <a href="https://pypi.org/project/onboarding-buddy-client/">PyPi</a> run the following:
 
 ```
 pip install onboarding-buddy-client
 ```
 
-## 5 Run tests
+## 6 Run tests
 
-### 5.1 Test - Email Address Validation
+### 6.1 Validation Tests
 
-This code snippet from the email_validation_test.py file demonstrates how to validate a mobile number.
+These code snippets from the validation_test.py file demonstrates how to validate email address, ip address, browser user agents and mobile numbers.
 
 ```python
 # Create an email validation request
@@ -65,104 +82,34 @@ request = EmailAddressRequestM(
     email_address="email@domain.com"
 )
 
+print("\nEmail Validation Test")
+print("---------------------")
+
 response = validation_api.email(email_address_request_m=request)
 ```
 
-To run this code example use the command:
-
-```
-python email_validation_test.py
-```
-
-Your should see output similar to the below for a successful call.
-
-```
-Email Address: email@domain.com
-Email Status: Caution
-Free Email: False
-Domain: domain.com
-MX Record: domain-com.mail.protection.outlook.com
-MX Found: True
-Check Status: Matched
-Has Sanction Match: False
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/email">here</a> 
-
-### 5.2 Test - IP Address Validation
-
-This code snippet from the ip_address_validation_test.py file demonstrates how to validate a mobile number.
-
 ```python
-# Create an ip address validation request
 request = IpAddressRequestM(
     ip_address="46.182.106.190"
 )
 
+print("\nIP Address Test")
+print("---------------------")
+
 response = validation_api.ipaddress(ip_address_request_m=request)
-
 ```
-
-To run this code example use the command:
-
-```
-python ip_address_validation_test.py
-```
-
-Your should see output similar to the below for a successful call
-
-```
-ipAddress: 46.182.106.190
-ISO Code: NL
-Country: Netherlands
-Threat: honeypot_tracker
-Risk Level: 5
-Is TOR Address: True
-Is VPN Address: False
-Check Status: Matched
-Message Id: c45d379d-242b-4d7c-94bc-4309098b68f3
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/ipaddress">here</a> 
-
-### 5.3 Test - User Agent Validation
-
-This code snippet from the user_agent_validation_test.py file demonstrates how to validate a user agent.
 
 ```python
+request = BrowserRequestM(
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
+)
 
-    request = BrowserRequestM(
-        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"
-    )
+print("\nBrowser Test")
+print("---------------------")
 
-    response = validation_api.browser(browser_request_m=request)
-    
-```
-
-To run this code example use the command:
+response = validation_api.browser(browser_request_m=request)
 
 ```
-python user_agent_validation_test.py
-```
-
-Your should see output similar to the below for a successful call
-
-```
-Email Address: email@domain.com
-Email Status: Caution
-Free Email: False
-Domain: domain.com
-MX Record: domain-com.mail.protection.outlook.com
-MX Found: True
-Check Status: Matched
-Has Sanction Match: False
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/browser">here</a> 
-
-### 5.4 Test - Mobile Number Validation
-
-This code snippet from the mobile_number_validation_test.py file demonstrates how to validate a mobile number.
 
 ```python
 # Create an mobile number validation request
@@ -173,35 +120,22 @@ request = MobileNumberRequestM(
     )
 )
 
+print("\nMobile Number Test")
+print("---------------------")
+
 response = validation_api.mobile(mobile_number_request_m=request)
 ```
-
 To run this code example use the command:
 
 ```
-python mobile_number_validation_test.py
+python validation_test.py
 ```
 
-Your should see output similar to the below for a successful call.
+For further information about these api actions you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation">here</a> 
 
-```
-Mobile Number: 0422123456
-Valid: True
-localFormat: 0422123456
-internationalFormat: +61422123456
-countryPrefix: +61
-countryCode: AU
-Carrier: Optus Mobile Pty Ltd
-Line Type: mobile
-Check Status: Matched
-Message Id: e9dc7728-f13b-47ff-8280-71dfabf152dd
-```
+### 6.2 Sanction Tests
 
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/mobile">here</a> 
-
-### 5.5 Test - Sanctions Check Individual
-
-This code snippet from the individual_sanctions_list_test.py file demonstrates how to submit a sanctions check for an individual.
+These code snippets from the sanction_test.py file demonstrates how to submit a sanctions check for an individual, entity, aircraft, vessel and crypto wallet addresses.
 
 ```python
 # Create an individual sanction request
@@ -211,241 +145,222 @@ request = IndividualSanctionsCheckRequestM(
     birth_year="1961"
 )
 
+print("\nIndividual Sanction Test")
+print("--------------------------")
+
 response = sanctions_api.individual(individual_sanctions_check_request_m=request)
-    
 ```
-
-To run this code example use the command:
-
-```
-python individual_sanctions_list_test.py
-```
-
-Your should see output similar to the below for a successful call.
-
-```
-Matched: True
-Full Name: PRIGOZHIN, Yevgeniy Viktorovich
-First Name: Yevgeniy Viktorovich
-Last Name: PRIGOZHIN
-Program: [UKRAINE-EO136w61] [CYBER2] [ELECTION-EO13848] [RUSSIA-EO14024]
-Additional Information: ['alt. Secondary sanctions risk: See Section 11 of Executive Order 14024.']
-Date Of Birth: 01 Jun 1961
-Birth Year: 1961
-Nationality: RUSSIA
-Gender: MALE
-Linked To: INTERNET RESEARCH AGENCY LLC.
-Secondary Sanctions Risk: UKRAINE-/RUSSIA-RELATED SANCTIONS REGULATIONS, 31 CFR 589.201 AND/OR 589.209
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/individual">here</a> 
-
-### 5.6 Test - Sanctions Check Entity
-
-This code snippet from the entity_sanctions_list_test.py file demonstrates how to submit a sanctions check for an entity.
 
 ```python
-# Create an entity sanctions check request
+# Create an entity sanction request
 request = EntitySanctionsCheckRequestM(
     name="INTERNET RESEARCH AGENCY LLC"
 )
 
+print("\nEntity Sanction Test")
+print("----------------------")
+
 response = sanctions_api.entity(entity_sanctions_check_request_m=request)
-    
-```
-
-To run this code example use the command:
 
 ```
-python entity_sanctions_list_test.py
-```
-
-Your should see output similar to the below for a successful call
-
-```
-Matched: True
-Full Name: INTERNET RESEARCH AGENCY LLC
-Program: [CYBER2] [ELECTION-EO13848]
-Alias List:
-MEDIASINTEZ LLC
-GLAVSET LLC
-MIXINFO LLC
-AZIMUT LLC
-.........
-
-Address List:
-55 Savushkina Street St. Petersburg Russia
-d. 4 korp. 3 litera A pom. 9-N, ofis 238, ul. Optikov St. Petersburg Russia
-.........
-
-Linked Individuals:
-PRIGOZHIN, Yevgeniy Viktorovich
-BYSTROV, Mikhail Ivanovich
-BURCHIK, Mikhail Leonidovich
-KRYLOVA, Aleksandra Yuryevna
-BOGACHEVA, Anna Vladislavovna
-........
-
-Secondary Sanctions Risk: UKRAINE-/RUSSIA-RELATED SANCTIONS REGULATIONS, 31 CFR 589.201.
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/entity">here</a> 
-
-### 5.7 Test sanctions list aircraft validation
-
-This code snippet from the aircraft_sanctions_list_test.py file demonstrates how to submit a sanctions check for an aircraft.
 
 ```python
-# Create an aircraft sanctions request
+# Create an aircraft sanction request
 request = AircraftSanctionsCheckRequestM(
-    name="RA-02791"
-)
+        name="RA-02791"
+    )
 
-response = sanctions_api.aircraft(aircraft_sanctions_check_request_m=request)
+    print("\nAircraft Sanction Test")
+    print("------------------------")
+    
+    response = sanctions_api.aircraft(aircraft_sanctions_check_request_m=request)
 ```
-
-To run this code example use the command:
-
-```
-python aircraft_sanctions_list_test.py
-```
-
-Your should see output similar to the below for a successful call
-
-```
-Matched: True
-Full Name: RA-02791
-Program: [UKRAINE-EO13661] [CYBER2] [ELECTION-EO13848]
-Manufacture Date: 01 DEC 2000
-Model: HAWKER 800XP
-Operator: BERATEX GROUP LIMITED
-Mode S Transponder Code: 140AE7
-Serial Identification: 258512
-Linked To: BERATEX GROUP LIMITED.
-Alias: M-VITO
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/aircraft">here</a> 
-
-### 5.8 Test sanctions list vessel validation
-
-This code snippet from the vessel_sanctions_list_test.py file demonstrates how to submit a sanctions check for a vessel.
 
 ```python
-# Create a vessel sanction check request
+# Create a vessel sanction request
 request = VesselSanctionsCheckRequestM(
     name="HWANG GUM SAN 2"
 )
 
+print("\nVessel Sanction Test")
+print("----------------------")
+
 response = sanctions_api.vessel(vessel_sanctions_check_request_m=request)
-```
-
-To run this code example use the command:
 
 ```
-python vessel_sanctions_list_test.py
-```
-
-Your should see output similar to the below for a successful call
-
-```
-Matched: True
-Full Name: HWANG GUM SAN 2
-Program: [DPRK]
-Additional Info: ['Transactions Prohibited For Persons Owned or Controlled By U.S. Financial Institutions: North Korea Sanctions Regulations section 510.214'] 
-Secondary Sanctions Risk: NORTH KOREA SANCTIONS REGULATIONS, SECTIONS 510.201 AND 510.210
-Vessel Type: General Cargo
-Vessel Flag: Democratic People's Republic of Korea
-```
-
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/vessel">here</a> 
-
-### 5.9 Test sanctions list crypto wallet validation
-
-This code snippet from the crypto_wallet_sanctions_list_test.py file demonstrates how to submit a sanctions check for a crypto wallet.
 
 ```python
-# Create an crypto wallet sanctions request
+# Create a crypto wallet sanction request
 request = CryptoWalletSanctionsCheckRequestM(
     address="0X098B716B8AAF21512996DC57EB0615E2383E2F96"
 )
 
+print("\nCrypto Wallet Sanction Test")
+print("-----------------------------")
+
 response = sanctions_api.crypto_wallet(crypto_wallet_sanctions_check_request_m=request)
+
 ```
 
 To run this code example use the command:
-```
-python crypto_wallet_sanctions_list_test.py
-```
-
-Your should see output similar to the below for a successful call
 
 ```
-Matched: True
-Entity Name: LAZARUS GROUP
-Program: [DPRK3]
-Additional Info: ['Transactions Prohibited For Persons Owned or Controlled By U.S. Financial Institutions: North Korea Sanctions Regulations section 510.214'] 
-Secondary Sanctions Risk: NORTH KOREA SANCTIONS REGULATIONS, SECTIONS 510.201 AND 510.210
-
-Address List:
-Potonggang District Pyongyang Korea, North
-
-Currency List:
-ETH: 0X098B716B8AAF21512996DC57EB0615E2383E2F96
-ETH: 0XA0E1C89EF1A489C9C7DE96311ED5CE5D32C20E4B
-ETH: 0X3CFFD56B47B7B41C56258D9C7731ABADC360E073
-ETH: 0X53B6936513E738F44FB50D2B9476730C0AB3BFC1
-......
-
-Alias List:
-'HIDDEN COBRA'
-'OFFICE 91'
-'GUARDIANS OF PEACE'
-'THE NEW ROMANTIC CYBER ARMY TEAM'
-'WHOIS HACKIN'
+python sanction_test.py
 ```
 
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions/operation/crypto-wallet">here</a> 
+For further information about these api actions you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/sanctions">here</a> 
 
-### 5.10 Test email validation with sanction data
+### 6.3 File Document Tests
 
-This code snippet from the email_sanctions_test.py file demonstrates how to submit a sanctions check for an email address.
+These code snippets take you through the steps required to:
+
+- upload a pdf file
+- retrieve file record
+- download a file
+- perform a semantic search 
+- perform a RAG query
 
 ```python
-# Create an email validation with sanctions request
-request = EmailAddressRequestM(
-    email_address="AFRICONLINE@PROTONMAIL.COM"
+# Upload File
+file = (file_like.name, file_like.content)
+uploadResponse = file_api.upload(file)
+pdf_file_global_id = uploadResponse.global_id
+```
+
+```python
+# Get File Record 
+fileRecordResponse = file_api.get_file_record(pdf_file_global_id)
+```
+
+```python
+# Download a File
+downloadResponse = file_api.download(pdf_file_global_id)   
+```
+
+```python
+# Perform a semantic search
+searchString = "Science Fiction movie scripts"
+searchFileRequest = SearchFileRequestM(
+    searchString=searchString,
+    fileTypeGroupId=DOCUMENT_FILETYPEGROUPID
+)
+searchFileResponse = file_api.search_file_records(searchFileRequest)
+    
+```
+
+```python
+# Perform a RAG Query
+rag_prompt = "Describe a quirky robot or droid from the document.  Return prompt details that can be used to generate a video with additional information about the droid.  Highlight personality and characteristics improvising where necessary"
+ragRequest = RagQueryRequestM(
+    file_global_id=pdf_file_global_id,
+    searchString=rag_prompt,
+    fileTypeGroupId=DOCUMENT_FILETYPEGROUPID
 )
 
-response = validation_api.email(email_address_request_m=request)
+ragResponse = file_api.document_rag(ragRequest)
 ```
 
 To run this code example use the command:
-```
-python email_sanctions_test.py
-```
-
-Your should see output similar to the below for a successful call
 
 ```
-Email Address: africonline@protonmail.com
-Email Status: Invalid
-Free Email: True
-Domain: protonmail.com
-MX Record: mail.protonmail.ch
-MX Found: True
-Check Status: Matched
-Has Sanction Match: True
-Entity Name: ASSOCIATION FOR FREE RESEARCH AND INTERNATIONAL COOPERATION
-Program: [UKRAINE-EO13661] [CYBER2] [ELECTION-EO13848]
-Secondary Sanctions Risk: UKRAINE-/RUSSIA-RELATED SANCTIONS REGULATIONS, 31 CFR 589.201 AND/OR 589.209
-
-Alias List:
-'AFRIC'
-
-Linked Individuals:
-Full Name: PRIGOZHIN, Yevgeniy Viktorovich
-Linked To: INTERNET RESEARCH AGENCY LLC.
+python file_document_test.py
 ```
 
-For further information about this api action you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/validation/operation/email">here</a> 
+For further information about these api actions you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/file">here</a> 
+
+### 6.4 File Image Tests
+
+These code snippets take you through the steps required to:
+
+- upload a jpg file
+- retrieve file record
+- download a file
+- perform a semantic search 
+- generate a video from image using VEO 2
+
+```python
+# Upload File
+file = (file_like.name, file_like.content)
+uploadResponse = file_api.upload(file)
+file_global_id = uploadResponse.global_id
+```
+
+```python
+# Get File Record 
+fileRecordResponse = file_api.get_file_record(file_global_id)
+```
+
+```python
+# Download a File
+downloadResponse = file_api.download(file_global_id)
+```
+
+```python
+#Perform a semantic search
+searchString = "Italian Landmarks"
+searchFileRequest = SearchFileRequestM(
+    searchString=searchString,
+    fileTypeGroupId=IMAGE_FILETYPEGROUPID
+)
+searchFileResponse = file_api.search_file_records(searchFileRequest)
+```
+
+```python
+# Generate Video from Image
+prompt = "Animate the clouds behind the colosseum"
+
+generateVideoRequest = GenerateVideoRequestM(
+    prompt=prompt,
+    image_file_global_id=file_global_id,
+    idempotency_key=str(uuid.uuid4())
+)
+generateVideoResponse = file_api.generate_video(generateVideoRequest)
+```
+
+To run this code example use the command:
+
+```
+python file_image_test.py
+```
+
+For further information about these api actions you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/file">here</a>
+
+### 6.5 File Document Tests
+
+These code snippets take you through the steps required to:
+
+- Generate a video using VEO 3
+- Generate an image using Imagen
+
+```python
+# Generate a video using VEO 3
+video_prompt = "Create a cinematic scene based on the following. **Droid Concept:** A Little Droid that comes to life. **Quirky Characteristics:** This droid is activated by pushing its nose. Once activated, it sprouts arms and legs and begins marching around uncontrollably, knocking things over with manic energy. It only reverts to its dormant state when its nose is pushed again. **Personality:** It has a chaotic, disruptive personality. **Prompt Details for Video Generation:***   **Subject:** A Little Droid*   **Action:** Being activated and marching around with jerky movements, knocking over various small objects in a cluttered junk shop.*   **Setting:** A cluttered, dusty junk shop. **Lighting:** Bright, slightly harsh lighting.  **Additional Details:** The droid should have a simple, almost toy-like design, with mismatched parts. **Camera movement:** Quick pan to the droid being activated, then shaky cam following its chaotic movements, ending with a snap zoom as it causes a small collision."
+
+generateVideoRequest = GenerateVideoRequestM(
+    prompt=video_prompt,
+    idempotency_key=str(uuid.uuid4())
+)
+
+generateVideoResponse = file_api.generate_video(generateVideoRequest)
+ ```
+
+```python
+# Generate an image using Imagen
+image_prompt = "Create a vibrant, pop-art style image inspired by Andy Warhol, featuring the Eiffel Tower. Use bold, contrasting colors like neon pink, electric blue, bright yellow, and lime green in a grid of four or more panels, each with a different color scheme. Emphasize flat, simplified shapes and high contrast, mimicking Warhol's iconic silkscreen aesthetic. Keep the Eiffel Tower's recognizable silhouette central in each panel, with minimal background details to highlight the structure. Ensure the overall composition feels repetitive yet varied, capturing the essence of Warhol’s repetitive pop-art style."
+
+generateImageRequest = GenerateImageRequestM(
+    prompt=image_prompt,
+    idempotency_key=str(uuid.uuid4())
+)
+
+generateImageResponse = file_api.generate_image(generateImageRequest)
+
+```
+
+To run this code example use the command:
+
+```
+python file_generation_test.py
+```
+
+For further information about these api actions you can inspect the api documentation <a href="https://docs.onboardingbuddy.co/#tag/file">here</a>
