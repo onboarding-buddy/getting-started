@@ -24,13 +24,15 @@ async function runFileTests() {
             idempotencyKey: idempotencyKey
         }
 
-        console.log("Generate video with prompt")
+        console.log("[1] Generate video with prompt")
         console.log("---------------------------")
         console.log(videoPrompt)
 
         const generateVideoResponse = await client.fileGenerateVideo(generateVideoRequest);
 
         console.log("poll until generation is complete")
+        console.log("Please wait whilst video, tags, title, description and embeddings are created")
+        console.log("This can take between 60-120 secs")
         console.log("---------------------------------")
 
         let pollFileResponse = await client.filePollFile(generateVideoResponse.data.fileGlobalId!)
@@ -42,9 +44,11 @@ async function runFileTests() {
             pollFileResponse = await client.filePollFile(generateVideoResponse.data.fileGlobalId!)
         }
     
+        console.log("\n[2] download file")
+        console.log("-----------------")
         const downloadResponseGenVideo = await client.fileDownload(generateVideoResponse.data.fileGlobalId!)
 
-        console.log("download response")
+        console.log("[2] download response")
         console.log("-----------------")
         console.log(`pre_signed_url: ${downloadResponseGenVideo.data.preSignedUrl}`)
 
@@ -57,13 +61,15 @@ async function runFileTests() {
             idempotencyKey: idempotencyKey
         }
 
-        console.log("Generate image with prompt")
+        console.log("\n[3] Generate image with prompt")
         console.log("---------------------------")
         console.log(imagePrompt)
 
         const generateImageResponse = await client.fileGenerateImage(generateImageRequest);
 
         console.log("poll until generation is complete")
+        console.log("Please wait whilst image, tags, title, description and embeddings are created")
+        console.log("This can take between 60-90 secs")
         console.log("---------------------------------")
 
         pollFileResponse = await client.filePollFile(generateImageResponse.data.fileGlobalId!)
@@ -75,9 +81,11 @@ async function runFileTests() {
             pollFileResponse = await client.filePollFile(generateImageResponse.data.fileGlobalId!)
         }
     
+        console.log("\n[4] download file")
+        console.log("-----------------")
         const downloadResponseGenImage = await client.fileDownload(generateImageResponse.data.fileGlobalId!)
 
-        console.log("download response")
+        console.log("[4] download response")
         console.log("-----------------")
         console.log(`pre_signed_url: ${downloadResponseGenImage.data.preSignedUrl}`)
     } catch (error) {

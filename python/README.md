@@ -47,12 +47,12 @@ conda create -n venv python=3.9
 conda activate venv
 ```
 
+## 5 Install dependancies
+
 After cloning this repo to your local machine navigate to the python folder in the repo
 ```
 cd python
 ```
-
-## 5 Install dependancies
 
 ### 5.1 Install the requirements.txt
 

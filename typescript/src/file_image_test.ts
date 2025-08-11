@@ -23,7 +23,8 @@ async function runFileTests() {
         const file = await loadFile(filePath);
 
         let imageFileGlobalId:string;
-
+        console.log(`[1] starting upload for file: ${IMAGE_FILE}`);
+        
         const uploadResponse = await client.fileUpload(file);
 
         if (uploadResponse.data.inError)
@@ -37,11 +38,15 @@ async function runFileTests() {
 
         imageFileGlobalId = uploadResponse.data.globalId!;
 
-        console.log("upload response");
+        console.log("[1] upload response");
         console.log("------------------------");
         console.log(`imageFileGlobalId: ${imageFileGlobalId}`);
 
         // 2 Get File Records
+        console.log("\n[2] Poll for completion of file processing")
+        console.log("Please wait whilst tags, title, description and embeddings are created")
+        console.log("This can take between 30-60 secs")
+        console.log("----------------------------------")
         let fileRecordsResponse = await client.fileGetFileRecords();
 
         while(fileRecordsResponse.data.fileRecords!.some(u => u.fileStatus! == 'PROCESSING'))
@@ -52,16 +57,20 @@ async function runFileTests() {
         }
 
         // 3 Get File Record(Image)
+        console.log("\n[3] Retrieve file")
+
         const fileRecordResponse = await client.fileGetFileRecord(imageFileGlobalId!);
 
-        console.log("fileRecordResponse response")
+        console.log("[3] fileGetFileRecord response")
         console.log("------------------------")
         console.log(`fileRecordResponse: ${fileRecordResponse}`)
 
         // 4 Download(Image)
+        console.log("\n[4] download file")
+        console.log("-----------------")
         const downloadResponse = await client.fileDownload(imageFileGlobalId!);
 
-        console.log("download response")
+        console.log("[4] download response")
         console.log("-----------------")
         console.log(`pre_signed_url: ${downloadResponse.data.preSignedUrl}`)
 
@@ -73,7 +82,7 @@ async function runFileTests() {
         }
         const searchFileResponse = await client.fileSearchFileRecords(searchFileRequest);
 
-        console.log("Searching images with query")
+        console.log("\n[5] Searching documents with query")
         console.log("---------------------------")
         console.log(searchString)
         console.log("searchFileResponse response")
@@ -93,7 +102,7 @@ async function runFileTests() {
             idempotencyKey: idempotencyKey
         }
 
-        console.log("Generate video with prompt from existing image")
+        console.log("\n[6] Generate video with prompt from existing image")
         console.log("---------------------------")
         console.log(videoPrompt)
 
@@ -108,7 +117,8 @@ async function runFileTests() {
             return
         }
 
-        console.log("poll until generation is complete")
+        console.log("Please wait whilst video, tags, title, description and embeddings are created")
+        console.log("This can take between 60-90 secs")
         console.log("---------------------------------")
 
         let pollFileResponse = await client.filePollFile(generateVideoResponse.data.fileGlobalId!)
@@ -120,9 +130,11 @@ async function runFileTests() {
             pollFileResponse = await client.filePollFile(generateVideoResponse.data.fileGlobalId!)
         }
     
+        console.log("\n[7] download file")
+        console.log("-----------------")
         const downloadResponseGenVideo = await client.fileDownload(generateVideoResponse.data.fileGlobalId!)
 
-        console.log("download response")
+        console.log("[7] download response")
         console.log("-----------------")
         console.log(`pre_signed_url: ${downloadResponseGenVideo.data.preSignedUrl}`)
 

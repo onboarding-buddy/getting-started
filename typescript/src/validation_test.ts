@@ -7,7 +7,7 @@ const obApiKey = process.env.OB_API_KEY || '';
 const obApiSecret = process.env.OB_API_SECRET || '';
 
 const client = new OnboardingBuddyClient(obAppKey, obApiKey, obApiSecret);
-    
+
 // Email Validation
 const emailValidation = client.validateEmail({
   emailAddress: 'email@domain.com',
@@ -16,6 +16,8 @@ const emailValidation = client.validateEmail({
 emailValidation
     .then(response => 
         { 
+            console.log("\n[1] Email Address Validation")
+            console.log("----------------------------")
             console.log(`Email Address: ${response.data.emailAddress}`)
             console.log(`Email Status: ${response.data.emailStatus}`)
             console.log(`Free Email: ${response.data.freeEmail}`)
@@ -23,6 +25,7 @@ emailValidation
             console.log(`MX Record: ${response.data.mxRecord}`)
             console.log(`MX Found: ${response.data.mxFound}`)
             console.log(`Check Status: ${response.data.checkStatus}`)
+            console.log(`Message Id: ${response.data.messageId}`)
         })
     .catch(error=> console.log(error.response.data));
 
@@ -33,6 +36,8 @@ const ipAddressValidation = client.validateIpAddress({
 ipAddressValidation
     .then(response => 
         { 
+            console.log("\n[2] IP Address Validation")
+            console.log("----------------------------")
             console.log(`IP Address: ${response.data.ipAddress}`)
             console.log(`ISO Code: ${response.data.isoCode}`)
             console.log(`Country: ${response.data.country}`)
@@ -52,6 +57,8 @@ const browserValidation = client.validateBrowser({
 browserValidation
     .then(response => 
         { 
+            console.log("\n[3] Browser Validation")
+            console.log("----------------------------")
             console.log(`User Agent: ${response.data.userAgent}`)
             console.log(`Simple Software: ${response.data.simpleSoftware}`)
             console.log(`Software: ${response.data.software}`)
@@ -65,7 +72,7 @@ browserValidation
         })
     .catch(error=> console.log(error.response.data));
 
-    const mobileNumberValidation = client.validateMobile({
+const mobileNumberValidation = client.validateMobile({
   mobileNumber: {
      prefix:'61',
      number:'0422123456'
@@ -75,6 +82,8 @@ browserValidation
 mobileNumberValidation
     .then(response => 
         { 
+            console.log("\n[4] Mobile Number Validation")
+            console.log("----------------------------")
             console.log(`Mobile Number: ${response.data.mobileNumber}`)
             console.log(`Valid: ${response.data.valid}`)
             console.log(`Local Format: ${response.data.localFormat}`)
