@@ -32,7 +32,6 @@ def load_file(file_path: str) -> FileLike:
     except Exception as e:
         raise RuntimeError(f"Error loading file: {e}")
 
-# Usage: Upload file using requests
 load_dotenv()
 
 ob_app_key = os.getenv("OB_APP_KEY")
@@ -41,92 +40,100 @@ ob_api_secret = os.getenv("OB_API_SECRET")
 
 # Configure the client with authentication headers
 config = Configuration(
-    host="https://api.dev.onboardingbuddy.co",  # From the servers section
     api_key={
-        "AppKey": ob_app_key,
-        "ApiKey": ob_api_key,
-        "ApiSecret": ob_api_secret
+        "AppKey": os.getenv("OB_APP_KEY"),
+        "ApiKey": os.getenv("OB_API_KEY"),
+        "ApiSecret": os.getenv("OB_API_SECRET")
     }
 )
-# Ensure no prefix is added to headers
-config.api_key_prefix["AppKey"] = ""
-config.api_key_prefix["ApiKey"] = ""
-config.api_key_prefix["ApiSecret"] = ""
 
 # Initialize the API client
 api_client = ApiClient(configuration=config)
 file_api = FileApi(api_client)
 
-IMAGE_FILE = "colleseum.jpg"
+IMAGE_FILE = "colosseum.jpg"
 IMAGE_FILETYPEGROUPID = 1
 
-# Upload Image
 file_path = os.path.join(os.getcwd(), IMAGE_FILE)
 file_global_id = ""
 
+# 1 Upload file
 try:
     file_like = load_file(file_path)
     
-    print(f"starting upload for file (name={file_like.name}, type={file_like.type}, size={file_like.size})")
+    print(f"[1] starting upload for file (name={file_like.name}, type={file_like.type}, size={file_like.size})")
     
     # Prepare file tuple
     file = (file_like.name, file_like.content)
     uploadResponse = file_api.upload(file)
     file_global_id = uploadResponse.global_id
 
-    print(f"upload response")
+    print(f"\n[1] upload response")
     print(f"------------------------")
-    print(f"pdfFileGlobalId: {file_global_id}")
+    print(f"file_global_id: {file_global_id}")
 except Exception as e:
     print(f"Error: {e}")
 
-# Get File Records
+# 2 Get File Records
 try:
+    print(f"\n[2] Poll for completion of file processing")
+    print(f"\nPlease wait whilst tags, title, description and embeddings are created")
+    print(f"\nThis can take between 30-60 secs")
+    print(f"----------------------------------")
+
     fileRecordsResponse = file_api.get_file_records()
     is_processing = any(x.file_status == "PROCESSING" for x in fileRecordsResponse.file_records)
 
     while(any(x.file_status == "PROCESSING" for x in fileRecordsResponse.file_records)):
         print("Awaiting file processing.....")
-        time.sleep(5)
+        time.sleep(8)
         fileRecordsResponse = file_api.get_file_records()
 
 except Exception as e:
     print(f"Error: {e}")
 
 
-# Get File Record
+# 3 Get File Record
 try:
+    print(f"\n[3] Retrieve file using GetFileRecordAsync for fileid {file_global_id}")
+    print("--------------------------------------------------------------------------")
+
     fileRecordResponse = file_api.get_file_record(file_global_id)
     
-    print(f"get_file_record response")
+    print(f"\n[3] get_file_record response")
     print(f"------------------------")
     print(f"fileRecordResponse: {fileRecordResponse}")
 except Exception as e:
     print(f"Error: {e}")
 
-# Download
+# 4 Download File
 try:
+    print(f"\n[4] Download file using DownloadAsync for fileid {file_global_id}")
+    print(f"--------------------------------------------------------------------")
+
     downloadResponse = file_api.download(file_global_id)
     
-    print(f"download response")
+    print(f"\n[4] download response")
     print(f"-----------------")
     print(f"pre_signed_url: {downloadResponse.pre_signed_url}")
 except Exception as e:
     print(f"Error: {e}")
 
-# Semantic Search
+# 5 Semantic Search
 try:
     searchString = "Italian Landmarks"
     searchFileRequest = SearchFileRequestM(
         searchString=searchString,
         fileTypeGroupId=IMAGE_FILETYPEGROUPID
     )
-    searchFileResponse = file_api.search_file_records(searchFileRequest)
-    
-    print("Searching images with query")
+
+    print("\n[5] Semantic search of documents for query:")
     print("---------------------------")
     print(searchString)
-    print("search_file_records response")
+    
+    searchFileResponse = file_api.search_file_records(searchFileRequest)
+
+    print("\n[5] search_file_records response")
     print("----------------------------")
 
     for fileRecord in searchFileResponse.file_records:
@@ -135,37 +142,42 @@ try:
 except Exception as e:
     print(f"Error: {e}")
 
-# Generate Video From Image
+# 6 Generate Video From Image
 try:
-    prompt = "Animate the clouds behind the colleseum"
+    prompt = "Animate the clouds behind the colosseum"
 
     generateVideoRequest = GenerateVideoRequestM(
         prompt=prompt,
         image_file_global_id=file_global_id,
         idempotency_key=str(uuid.uuid4())
     )
-    generateVideoResponse = file_api.generate_video(generateVideoRequest)
     
-    print("Generate video for image with prompt")
+    print("\n[6] Generate video from image with prompt")
     print("------------------------------------")
     print(prompt)
 
-    print("poll until generation is complete")
-    print("---------------------------------")
+    generateVideoResponse = file_api.generate_video(generateVideoRequest)
+
+    print("\n[6] poll until generation is complete")
+    print("---------------------------------------")
+    print("\nThis can take between 60-120 secs")
+    print("\nPlease wait whilst video, tags, title, description are created")
     
     pollFileResponse = file_api.poll_file(generateVideoResponse.file_global_id)
 
-    while(pollFileResponse.file_status != "PROCESSED"):
+    while(pollFileResponse.file_status != "PROCESSED" and pollFileResponse.file_status != "FAILED"):
         print("Awaiting file generation.....")
         time.sleep(8)
         pollFileResponse = file_api.poll_file(generateVideoResponse.file_global_id)
 
-    downloadResponse = file_api.download(generateVideoResponse.file_global_id)
+    if pollFileResponse.file_status == "PROCESSED":
+        downloadResponse = file_api.download(generateVideoResponse.file_global_id)
+        print(f"\ndownload response")
+        print(f"-----------------")
+        print(f"pre_signed_url: {downloadResponse.pre_signed_url}")
+    else:
+        print(f"\nprocessing failed please try again")
     
-    print(f"download response")
-    print(f"-----------------")
-    print(f"pre_signed_url: {downloadResponse.pre_signed_url}")
-
 except Exception as e:
     print(f"Error: {e}")    
 
