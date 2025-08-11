@@ -44,7 +44,7 @@ Open the project file for the console application after cloning this repo to you
 OnboardingBuddyConsole.csproj
 ```
 
-This application contains sample code utilising the C# SDK from the Nuget Repository that demonstrates the capabilities of the OnboardingBuddy API. 
+This application contains sample code that uses the <href="https://www.nuget.org/packages/OnboardingBuddyClient">C# Nuget Package</a> to call the Onboarding Buddy API. 
 
 Note: the files required to run this demo are included in the dotnet folder.
 
@@ -53,7 +53,7 @@ exo-planets.pdf
 eiffel-tower.jpg
 ```
 
-To start the console application press F5 to run the api tests.  After lanching you will be presented with 5 differents tests that can be run, listed below:
+To start the console application press F5 to run the API tests.  After launching you will be presented with 5 differents tests that can be run, listed below:
 
 1 - Validation Tests
 This includes examples calls for email, mobile, ip address and browser validation
@@ -71,6 +71,8 @@ This includes examples uploading a pdf, download, semantic search and video from
 This includes examples creating a video (Veo3) and image (Imagen)  from a prompt
 
 Select the desired test to run the respective code.
+
+<img src="docs/console.png" width="600">
 
 ## 4 Questions and Help
 
