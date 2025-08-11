@@ -17,6 +17,8 @@ const individualSanctions = client.checkIndividualSanctions({
 individualSanctions
     .then(response => 
         { 
+            console.log("\n[1] Individual Sanction Check")
+            console.log("----------------------------")
             console.log(`Matched: ${response.data.matched}`)
 
             if (response.data.results)
@@ -43,6 +45,9 @@ const entitySanctions = client.checkEntitySanctions({
 entitySanctions
     .then(response => 
         { 
+            console.log("\n[2] Entity Sanction Check")
+            console.log("----------------------------")
+            
             console.log(`Matched: ${response.data.matched}`)
             if (response.data.match)
             {
@@ -87,6 +92,9 @@ const aircraftSanctions = client.checkAircraftSanctions({
 aircraftSanctions
     .then(response => 
         { 
+            console.log("\n[3] Aircraft Sanction Check")
+            console.log("----------------------------")
+
             console.log(`Matched: ${response.data.matched}`)
             if (response.data.match)
             {
@@ -113,6 +121,9 @@ aircraftSanctions
 vesselSanctions
     .then(response => 
         { 
+            console.log("\n[4] Vessel Sanction Check")
+            console.log("----------------------------")
+            
             console.log(`Matched: ${response.data.matched}`)
             if (response.data.match)
             {
@@ -133,6 +144,9 @@ vesselSanctions
 cryptoWalletSanctions
     .then(response => 
         { 
+            console.log("\n[5] Crypto Wallet Sanction Check")
+            console.log("----------------------------")
+            
             console.log(`Matched: ${response.data.matched}`)
             if (response.data.entityMatch)
             {
