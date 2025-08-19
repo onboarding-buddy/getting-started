@@ -2,11 +2,11 @@
 
 ## 1 Create an OnboardingBuddy account 
 
-If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
+If you have not done so already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
 
-## 2 Get you API credentials
+## 2 Get your API credentials
 
-Navigate to you application by clicking "View" on the dashboard.  making note of the following:
+Navigate to your application by clicking "View" on the dashboard.  making note of the following:
 
 On the "Details" Tab make a note of your application key:
 ```
@@ -41,7 +41,7 @@ export OB_API_SECRET='<API_SECRET>'
 
 This guide assumes the use of anaconda for running the python tests on your local machine.  For help installing and getting started <a href="https://www.anaconda.com/docs/getting-started/getting-started">click here</a>
 
-To activate you python environment run the following:
+To activate your python environment run the following:
 ```
 conda create -n venv python=3.9
 conda activate venv

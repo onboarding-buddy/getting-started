@@ -33,7 +33,7 @@ namespace OnboardingBuddyConsole
 
                 while (true)
                 {
-                    Console.WriteLine("Please select the test suite you like to run.  Enter");
+                    Console.WriteLine("Please select the test suite you would like to run.  Enter");
                     Console.WriteLine("1 for Validation Service");
                     Console.WriteLine("2 for Sanction Service");
                     Console.WriteLine("3 for File API (document processing)");
