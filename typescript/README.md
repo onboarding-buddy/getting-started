@@ -2,11 +2,11 @@
 
 ## 1 Create an OnboardingBuddy account 
 
-If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
+If you have not done so already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
 
-## 2 Get you API credentials
+## 2 Get your API credentials
 
-Navigate to you application by clicking "View" on the dashboard.  making note of the following:
+Navigate to your application by clicking "View" on the dashboard.  making note of the following:
 
 On the "Details" Tab make a note of your application key:
 ```
