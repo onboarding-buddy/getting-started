@@ -2,7 +2,7 @@
 
 ## 1 Create an OnboardingBuddy account 
 
-If you have not already, navigate to the Onboarding Buddy website at https://www.onboardingbuddy.co.  Proceed to register and create an account.
+If you have not already, navigate to the Onboarding Buddy website at <a href="https://www.onboardingbuddy.co" target="blank">https://www.onboardingbuddy.co</a>.  Proceed to register and create an account.
 
 ## 2 Get you API credentials
 
@@ -44,7 +44,7 @@ Open the project file for the console application after cloning this repo to you
 OnboardingBuddyConsole.csproj
 ```
 
-This application contains sample code that uses the <href="https://www.nuget.org/packages/OnboardingBuddyClient">C# Nuget Package</a> to call the Onboarding Buddy API. 
+This application contains sample code that uses the <a href="https://www.nuget.org/packages/OnboardingBuddyClient" target="blank">C# Nuget Package</a> to call the Onboarding Buddy API. 
 
 Note: the files required to run this demo are included in the dotnet folder.
 
